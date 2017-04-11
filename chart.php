@@ -1,0 +1,125 @@
+<?php 
+header("Content-Type: text/html; charset=UTF-8");
+
+$file = "omak.json";
+
+function printChart($file){
+
+    $jsoncontent = file_get_contents($file);
+    //echo $jsoncontent;
+    //$database = json_decode($content, true);
+    //$omakcount = (int)$database[$user]['omak'];
+
+    # print html
+    print "<html>\n";
+    print "<head>\n";
+    print "<script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>\n";
+    print "\n";
+    print "<title>Bank of Buddha - OMAK</title>\n";
+    print "<style>\n";
+    print "div {\n";
+    print "    margin:0 auto;  \n";
+    print "    text-align: center;\n";
+    print "}\n";
+    print "#chart_div {\n";
+    print "    width: 80vw;\n";
+    print "    height: 35vw;\n";
+    print "}\n";
+    print "#title, #duration {\n";
+    print "    user-select: none;\n";
+    print "    -webkit-font-smoothing: antialiased;\n";
+    print "    font-family: Roboto;\n";
+    print "    font-size: 16px;\n";
+    print "}\n";
+    print "#title {\n";
+    print "    padding-top: 10px;\n";
+    print "}\n";
+    print "h1 {\n";
+    print "    font-size: 30pt;\n";
+    print "    -webkit-margin-before: 0px;\n";
+    print "    -webkit-margin-after: 0px;\n";
+    print "}\n";
+    print "</style>\n";
+    print "</head>\n";
+    print "<body>\n";
+    print "<div id=\"title\"><img src=\"/Logo.png\" width=\"100px\" height=\"100px\"></img><h1>Bank of Buddha</h1></div>\n";
+    print "<div id=\"duration\"><h5>Started thousands years ago but recorded here since 6 April 2017</h5></div>\n";
+    print "<div id=\"chart_div\"></div>\n";
+    print "\n";
+    print "<script>\n";
+    print "google.charts.load('current', {packages: ['corechart', 'bar']});\n";
+    print "google.charts.setOnLoadCallback(drawMaterial);\n";
+    print "\n";
+    print "function load(){\n";
+    print "    return ";
+    // {\"dessimondo\":{\"omak\":1,\"merit\":4},\"dawnchen\":{\"omak\":3,\"merit\":1},\"sgnunnery\":{\"omak\":0,\"merit\":1},\"bwmyouth\":{\"omak\":0,\"merit\":1},\"ljk97\":{\"omak\":1,\"merit\":0}}\n";
+    print $jsoncontent;
+    print "}\n";
+    print "\n";
+    print "var data = load();\n";
+    print "\n";
+    // print "console.log(data);\n";
+    print "\n";
+    print "// Total users\n";
+    print "var Objcount = 1;\n";
+    print "for (var key in data){\n";
+    print "    Objcount++;\n";
+    print "}\n";
+    print "\n";
+    print "// Initialise array\n";
+    print "var table = new Array(Objcount);\n";
+    print "for (var i = 0; i < Objcount; i++) {\n";
+    print "table[i] = new Array(3);\n";
+    print "}\n";
+    print "\n";
+    print "// Declare first row\n";
+    print "table[0][0] = 'BWMY';\n";
+    print "table[0][1] = 'OMAK';\n";
+    print "table[0][2] = 'Merits';\n";
+    print "\n";
+    print "var i = 1;\n";
+    print "for (var key in data){\n";
+    print "    table[i][0] = key;\n";
+    print "    table[i][1] = data[key][\"omak\"];\n";
+    print "    table[i][2] = data[key][\"merit\"];\n";
+    print "    i++;	\n";
+    print "}\n";
+    // print "console.log(table);\n";
+    print "\n";
+    print "function drawMaterial() {\n";
+    print "    var data = google.visualization.arrayToDataTable(table);\n";
+    print "\n";
+    print "    var options = {\n";
+    print "        chart: {\n";
+    print "        title: 'OMAK Chart'\n";
+    print "        },\n";
+    print "        hAxis: {\n";
+    print "        title: 'Total Counts',\n";
+    print "        minValue: 0,\n";
+    print "        },\n";
+    print "        vAxis: {\n";
+    print "        title: 'Members'\n";
+    print "        },\n";
+    print "        colors: ['#4ba0e5','#4be5c3'],\n";
+    print "        backgroundColor: {\n";
+    print "            stroke: 'black',\n";
+    print "            strokeWidth: 0,\n";
+    print "            fill: 'black'\n";
+    print "        },\n";
+    print "        bars: 'vertical'\n";
+    print "    };\n";
+    print "    var material = new google.charts.Bar(document.getElementById('chart_div'));\n";
+    //print "    material.draw(data, options);\n";
+    print "      var view = new google.visualization.DataView(data);\n";
+    print "      view.setRows(data.getSortedRows({column: 0, desc: false}));\n";
+    print "      material.draw(view, options);\n";
+    print "}\n";
+    print "</script>\n";
+    print "\n";
+    print "</body>\n";
+    print "</html>";
+}
+
+printChart($file);
+
+?>
